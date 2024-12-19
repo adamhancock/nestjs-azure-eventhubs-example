@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@adamhancock/nestjs-eventhubs": "^0.1.0",
     "@azure/event-hubs": "^5.12.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",

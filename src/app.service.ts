@@ -1,13 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { EventHubPublish, EventHubSubscribe } from './event-hub/decorators';
-import { CreateUserResponse, UpdateUserResponse, MessageResponse, EventData } from './event-hub/types';
+import { EventHubPublish, EventHubSubscribe } from '@adamhancock/nestjs-eventhubs';
+import { CreateUserRequest, UpdateUserRequest, CreateUserResponse, UpdateUserResponse } from './types';
 
 @Injectable()
 export class AppService {
   private readonly logger = new Logger(AppService.name);
 
   @EventHubPublish({ routingKey: 'user.created' })
-  async createUser(userData: any): Promise<CreateUserResponse> {
+  async createUser(userData: CreateUserRequest): Promise<CreateUserResponse> {
     this.logger.log(`Creating user: ${JSON.stringify(userData)}`);
     return {
       message: 'User created',
@@ -17,7 +17,7 @@ export class AppService {
   }
 
   @EventHubPublish({ routingKey: 'user.updated' })
-  async updateUser(userId: string, userData: any): Promise<UpdateUserResponse> {
+  async updateUser(userId: string, userData: UpdateUserRequest): Promise<UpdateUserResponse> {
     this.logger.log(`Updating user ${userId}: ${JSON.stringify(userData)}`);
     return {
       message: 'User updated',
@@ -35,5 +35,4 @@ export class AppService {
   async handleUserUpdated(data: UpdateUserResponse) {
     this.logger.log(`User updated: ${JSON.stringify(data)}`);
   }
-
 }

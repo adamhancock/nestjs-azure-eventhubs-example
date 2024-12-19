@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EventHubModule } from './event-hub/event-hub.module';
+import { EventHubModule } from '@adamhancock/nestjs-eventhubs'
 import configuration from './config/configuration';
 
 @Module({
@@ -11,7 +11,13 @@ import configuration from './config/configuration';
       isGlobal: true,
       load: [configuration],
     }),
-    EventHubModule,
+    EventHubModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        connectionString: configService.get('eventHub.connectionString'),
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

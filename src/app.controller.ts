@@ -1,18 +1,6 @@
 import { Controller, Post, Body, Logger, HttpException, HttpStatus, Param } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CreateUserResponse, UpdateUserResponse, MessageResponse } from './event-hub/types';
-
-interface CreateUserRequest {
-  name: string;
-  email: string;
-  [key: string]: any;
-}
-
-interface UpdateUserRequest {
-  name?: string;
-  email?: string;
-  [key: string]: any;
-}
+import { CreateUserRequest, UpdateUserRequest, CreateUserResponse, UpdateUserResponse } from './types';
 
 @Controller()
 export class AppController {
@@ -55,5 +43,4 @@ export class AppController {
       );
     }
   }
-
 }
